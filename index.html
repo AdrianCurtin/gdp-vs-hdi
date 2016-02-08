@@ -1,0 +1,76 @@
+<!DOCTYPE HTML5>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type=text/css href="project_report.css">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <script type="text/javascript" src="gdp_vs_hdi.js"></script>
+  </head>
+<body>
+  <div id="wrap">
+    <div id="header">
+	  <h1>Where Human Development Eludes Economic Progress</h1>
+	</div>
+    <div id="nav"></div>
+    <h2 id="chart_title"></h2>
+    <div id="main">
+      <h3 id="chart_caption"></h3>
+      <div>
+        &nbsp &nbsp 
+        <span><strong>Economic (GDP) Rank</strong></span>
+        &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+        &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+		&nbsp 
+        <span><strong>Human Development (HDI) Rank</strong></span>
+      </div>
+      <script type="text/javascript">
+        /* Load CSV file and pass the contents of it to the draw function */
+        var left_indicator = 'GDP'
+        var right_indicator = 'HDI'
+        d3.csv("rank_gdp_hdi.csv", function(d) {
+            d['Year'] = +d['Year'];
+            d[right_indicator] = +d[right_indicator];
+            d[left_indicator] = +d[left_indicator];
+            return d;
+        }, draw);
+      </script>
+    </div>
+    <div id="sidebar">
+      <fieldset class="region_legend">
+        <legend><strong>Regions with Uneven Development</strong></legend> 
+		<div class="region_map">
+		</div>
+      </fieldset>
+	  <br>
+      <br>
+      <fieldset class="country_legend">
+        <legend><strong>Lines Show Countries where</strong></legend> 
+        <span style="color:#ffcc99;font-size:1.5em"><b>&#9644</b> </span>
+        GDP rank is similar to HDI rank <br><br>
+		<span style="color:#dc3815;font-size:1.5em"><b>&#9644</b> </span>
+		GDP rank exceeds HDI rank by >30<br><br>
+        <span style="color:#151B54;font-size:1.5em"><b>&#9644</b> </span>
+		HDI rank exceeds GDP rank by >30
+      </fieldset>
+      <br>
+      <br>
+      <div>
+        <p><strong>Select Year</strong></p> 
+        <select class="year_select">
+        </select>
+      </div>
+      <br>
+      <br>
+      <div>
+        <p><strong>Highlight Region</strong></p> 
+        <select class="region_select">
+        </select>
+      </div>
+      <br>
+    </div>
+    <div id="footer">
+    </div>
+  </div>	
+</body>
+</html>

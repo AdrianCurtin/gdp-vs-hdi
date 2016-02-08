@@ -1,0 +1,21 @@
+[[1] Per capita Gross Domestic Product (GDP) data from Gapminder](http://spreadsheets.google.com/pub?key=0AkBd6lyS3EmpdHo5S0J6ekhVOF9QaVhod05QSGV4T3c&output=xls "try")
+
+[[2] Human Development Index (HDI) data from Gapminder](http://spreadsheets.google.com/pub?key=tyadrylIpQ1K_iHP407374Q&output=xls)
+
+[[3] Slopegraph by Alberto Cairo](http://vizwiz.blogspot.com/2013/01/alberto-cairo-three-steps-to-become.html)
+
+[[3] Enter, Update, Exit: An Introduction to D3.js](https://medium.com/@c_behrens/enter-update-exit-6cafc6014c36)
+
+[[4] D3 How to change dataset based on drop down box selection](http://stackoverflow.com/questions/24193593/d3-how-to-change-dataset-based-on-drop-down-box-selection)
+
+[[5] United Nations Development Programme, Human Development Report](http://hdr.undp.org/en/content/human-development-index-hdi)
+
+[[6] HDI surprisingly similar to GDP/capita](http://www.gapminder.org/news/hdi-surprisingly-similar-to-gdpcapita/)
+
+[[7] Slopegraphs in D3.js](http://vandykeindustries.com/slopegraphs-d3.html)
+
+[[8] Gross Domestic Product (GDP) Definition](http://www.investopedia.com/terms/g/gdp.asp)
+
+[[9] Gross Domestic Product vs Human Development Index](http://www.statemaster.com/article/Gross-Domestic-Product-vs-Human-Development-Index)
+
+

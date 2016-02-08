@@ -1,0 +1,111 @@
+body,
+html {
+    margin:10;
+    padding:0;
+    color:#000;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    font-size: 1em; /* 1em=16px */
+	
+}
+#header {
+    /*padding:5px 10px;*/
+}
+#wrap {
+    width:1100px;
+    /*margin:0 auto;*/
+    margin-left: 20;
+}
+#main {
+    float:left;
+    width:600px;
+    padding:10px;
+    background:#F0F0F0;
+}
+#footer {
+    clear:both;
+    padding:5px 10px;
+    #background:#cc9;
+}
+#sidebar {
+    float:right;
+    width:400px;
+    padding:10px;
+}
+#nav {
+    padding:5px 10px;
+}
+#nav ul {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+#nav li {
+    display:inline;
+    margin:0;
+    padding:0;
+}
+h1 {
+    margin:0;
+}
+#chart_title , #chart_caption {
+    margin:0 0 1em;
+    color: black;
+}
+#chart_caption {
+    text-align: center;
+}
+#chart_title em , #chart_caption em {
+    color: red;
+}
+#footer p {
+    margin:0;
+}
+* html #footer {
+    height:1px;
+}
+path {
+    fill: none;
+    stroke: black;
+    stroke-width: 2px;
+}
+.tick {
+    fill: none;
+    stroke: black;
+}
+circle {
+    stroke: none;
+}
+line {
+    fill: none;
+}
+.year_select,.region_select {
+    padding: 5px;
+    background:#F0F0F0;
+    font-size: 1em;
+    display: none;
+}
+.alignleft {
+    float: left;
+}
+.alignright {
+    float: right;
+}
+.tooltip {
+    color: #333;
+    background: #eee;
+    box-shadow: 0 0 5px #999999;
+    margin: 0px;
+    padding: 5px;
+    width: 200px;
+    font-size: 0.75em;
+    line-height: 0.25em;
+    position: absolute;
+    display: none;
+}
+fieldset {
+	border: 2px solid black;
+    width: 300px;
+}
+legend {
+	border: 2px solid black;
+}

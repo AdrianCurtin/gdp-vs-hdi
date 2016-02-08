@@ -1,0 +1,416 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <style>
+      body,
+      html {
+          margin:0;
+          padding:0;
+          color:#000;
+          font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+          font-size: 1em; /* 1em=16px */
+      }
+      #wrap {
+          width:900px;
+          margin:0 auto;
+      }
+      #header {
+          padding:5px 10px;
+      }
+      #nav {
+          padding:5px 10px;
+      }
+      #main {
+          float:left;
+          width:575px;
+          padding:10px;
+          background:#F0F0F0;
+      }
+      #sidebar {
+          float:right;
+          width:230px;
+          padding:10px;
+      }
+      #footer {
+          clear:both;
+          padding:5px 10px;
+          #background:#cc9;
+      }
+      #nav ul {
+          margin:0;
+          padding:0;
+          list-style:none;
+      }
+      #nav li {
+          display:inline;
+          margin:0;
+          padding:0;
+      }
+      h1 {
+          margin:0;
+      }
+      #chart_title {
+          margin:0 0 1em;
+          color: black;
+          text-align: center;
+      }
+      #chart_title em {
+          color: red;
+      }
+      #footer p {
+          margin:0;
+      }
+      * html #footer {
+          height:1px;
+      }
+      path {
+          fill: none;
+          stroke: black;
+          stroke-width: 2px;
+      }
+      .tick {
+          fill: none;
+          stroke: black;
+      }
+      circle {
+          r: 4px;
+          stroke: none;
+      }
+      line {
+          fill: none;
+          stroke-width: 1px;
+        }
+      .year_select {
+          background:#F0F0F0;
+          font-size: 1em;
+          display: none;
+      }
+      .country_select {
+          background:#F0F0F0;
+          font-size: 1em;
+          display: none;
+      }
+      .alignleft {
+          float: left;
+      }
+      .alignright {
+          float: right;
+      }
+      .tooltip {
+          color: #333;
+          background: #eee;
+          box-shadow: 0 0 5px #999999;
+          margin: 0px;
+          padding: 5px;
+          width: 150px;
+          font-size: 0.75em;
+          line-height: 0.25em;
+          position: absolute;
+          display: none;
+      }
+    </style>
+    <script type="text/javascript">
+      format = d3.time.format("%d-%m-%Y (%H:%M h)");
+      function draw(gdp_data) {
+          /* D3.js setup code */
+          "use strict";
+          var rank_diff_threshold = 30;
+          var margin = {top: 40, right: 20, bottom: 30, left: 60},
+          width = 350 - margin.left - margin.right,
+          height = 700 - margin.top - margin.bottom;
+          var left_indicator = 'GDP'
+          var right_indicator = 'HDI'
+          var svg = d3.select("body #wrap #main")
+              .append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+              .append('g')
+              .attr('class', 'chart');
+
+          var left_extent = d3.extent(gdp_data, function(d) {
+              return d[left_indicator];
+          });
+          var left_scale = d3.scale.linear()
+              .domain(left_extent)
+              .range([height-margin.top, margin.bottom]);
+
+          var right_extent = d3.extent(gdp_data, function(d) {
+              return d[right_indicator];
+          });
+          var right_scale = d3.scale.linear()
+              .domain(right_extent)
+              .range([height-margin.top, margin.bottom]);
+
+          var years_set = d3.set();
+          gdp_data.forEach(function(d) {
+              years_set.add(d['Year']);
+          });
+          var years = [];
+          years_set.forEach(function(d) {
+              years.push(+d);
+          });          
+          var time_extent = d3.extent(gdp_data, function(d) {
+              return d['Year'];
+          });
+          var time_scale = d3.time.scale()
+              .range([margin.left, width])
+              .domain(time_extent);
+
+          function key_country_year(d) {
+              return d['Country_Name']+d['Year'];
+          }
+          function key_country(d) {
+              return d['Country_Name'];
+          }
+
+          function is_missing(d) {
+              return d == null
+          }
+          var left_x = margin.left;
+          function left_y(d) {
+              return left_scale(d[left_indicator])
+          }
+          var right_x = width-margin.right;
+          function right_y(d) {
+              return right_scale(d[right_indicator])
+          }
+          function slope_color(d) {
+              var y1 = left_y(d);
+              var y2 = right_y(d);
+              var delta_y = (y1-y2);
+              var diff_threshold = 0;
+              var color = 'black';
+              if (delta_y < -1 * diff_threshold) {
+                  color = '#dc3815';
+              } else if (delta_y > diff_threshold) {
+                  color = '#151B54' ;
+              } else {
+                  color = '#AAAAAA';
+              }
+              return color;              
+          }
+          function display_style(d) {
+              var ds = is_missing(d[left_indicator])||is_missing(d[right_indicator]) ?
+                  "none" : null;
+              return ds;
+          }
+          var circle_tip = d3.select("body #wrap #main")
+              .append("div")
+              .attr("class", "tooltip");
+          circle_tip.append('div')
+              .attr('class', 'country');
+          circle_tip.append('div')
+              .style('clear', 'both');
+          circle_tip.append('div')
+              .attr('class', 'indicator');
+          circle_tip.append('div')
+              .style('clear', 'both');
+          function show_left_tip(d) {
+              circle_tip.select('.country').html(
+                  "<p class=\"alignleft\"><strong>Country:</strong><\p> <p class=\"alignright\">"+d.Country_Name+"</p>");
+              circle_tip.select('.indicator').html(
+                  "<p class=\"alignleft\"><strong>GDP:</strong><\p> <p class=\"alignright\">"+d.GDP+"</p>");
+              circle_tip.style('display', 'block');
+          }
+          function show_right_tip(d) {
+              circle_tip.select('.country').html(
+                  "<p class=\"alignleft\"><strong>Country:</strong><\p> <p class=\"alignright\">"+d.Country_Name+"</p>");
+              circle_tip.select('.indicator').html(
+                  "<p class=\"alignleft\"><strong>HDI:</strong><\p> <p class=\"alignright\">"+d.HDI+"</p>");
+              circle_tip.style('display', 'block');
+          }
+          function track_tip(d) {
+              var py = d3.event.pageY;
+              var px = d3.event.pageX;
+              circle_tip.style('top', (py+1) + 'px');
+              circle_tip.style('left', (px+7) + 'px');
+          }
+          function hide_tip(d) {
+              circle_tip.style('display', 'none');
+          }
+
+          function update_yearly_data(year, rank_diff_threshold) {
+              var yearly_data = gdp_data.filter(function(d) {
+                  var rank_diff = d['HDI']-d['GDP'];
+                  var in_threshold = (rank_diff < -1 * rank_diff_threshold) ||
+                      (rank_diff > rank_diff_threshold);
+                  return (d['Year'] === year) && in_threshold;
+              });
+
+              var countries = [];
+              yearly_data.forEach(function(d) {
+                  countries.push(d['Country_Name']);
+              }); 
+              countries.sort();
+              debugger;
+              d3.select("#chart_title")
+                  .html("In <em>"+year+"</em>, GDP rankings of <em>"+countries.length+ "</em> countries differed from their HDI rankings by 30 or more positions");
+              var lines = svg.selectAll("line")
+                  .data(yearly_data, key_country_year);
+
+              lines.exit().remove();
+              lines.enter()
+                  .append("line")
+                  .attr("x1", left_x)
+                  .attr("y1", left_y)
+                  .attr("x2", right_x)
+                  .attr("y2", right_y) 
+                  .attr("stroke", slope_color);
+
+              var left_circles = svg.selectAll("circle.left_circle")
+                  .data(yearly_data, key_country_year);
+              left_circles.exit().remove();
+              left_circles.enter()
+                  .append("circle")
+                  .attr('class', 'left_circle')
+                  .attr("cx", left_x)
+                  .attr("cy", left_y)
+                  .attr("fill", slope_color)
+                  .on('mouseover', show_left_tip)
+                  .on('mouseout', hide_tip)
+                  .on('mousemove', track_tip);
+                                         
+              var right_circles = svg.selectAll("circle.right_circle")
+                  .data(yearly_data, key_country_year);
+              right_circles.exit().remove();
+              right_circles.enter()
+                  .append("circle")
+                  .attr('class', 'right_circle')
+                  .attr("cx", right_x)
+                  .attr("cy", right_y)
+                  .attr("fill", slope_color)
+                  .on('mouseover', show_right_tip)
+                  .on('mouseout', hide_tip)
+                  .on('mousemove', track_tip);
+
+              function update_country_data(country) {
+                  var country_data = yearly_data.filter(function(d) {
+                      return d['Country_Name'] === country;
+                  });
+                  // update current lines and circles, and fade others
+                  svg.selectAll("line")
+                      .data(country_data, key_country)
+                      .style("opacity", 1)            // update current line
+                      .exit().style("opacity", 0.1); // fade other lines
+                  svg.selectAll("circle.left_circle")
+                      .data(country_data, key_country)
+                      .style("opacity", 1)            // update current circle
+                      .exit().style("opacity", 0.1)   // fade other circles
+                  svg.selectAll("circle.right_circle")
+                      .data(country_data, key_country)
+                      .style("opacity", 1)            // update current circle
+                      .exit().style("opacity", 0.1);  // fade other circles
+              }
+
+              var country_selection = d3.select("#sidebar .country_select");
+              country_selection.style('display', 'block');
+              var country_options = country_selection.selectAll("option")
+                  .data(countries, false);
+              var exit_joins = country_options.exit();
+              var enter_joins = country_options.enter();
+              debugger;
+              exit_joins.remove();
+              debugger;
+              enter_joins.append("option")
+                  .attr("value", function(d) {
+                      return d;
+                  })
+                  .text(function(d) {
+                      return d;
+                  });
+              debugger;
+              // handle on click event
+              country_selection.on('change', function() {
+                  var country = d3.select(this).property('value');
+                  update_country_data(country);
+              });
+          }
+          update_yearly_data(2009);
+          var year_idx = 0;
+          var year_interval = setInterval(function() {
+              update_yearly_data(years[year_idx], rank_diff_threshold);
+              year_idx++;
+              if(year_idx >= years.length) {
+                  clearInterval(year_interval);
+
+                  var year_selection = d3.select("#sidebar .year_select");
+                  year_selection.style('display', 'block');
+                  var year_options = year_selection.selectAll("option")
+                      .data(years)
+                      .enter()
+                      .append("option")
+                      .attr("value", function(d) {
+                          return d;
+                      })
+                      .text(function(d) {
+                          return d;
+                      });
+
+                  // handle on click event
+                  year_selection.on('change', function() {
+                      var year = +d3.select(this).property('value');
+                      update_yearly_data(year, rank_diff_threshold);
+                  });
+              }
+          }, 1000);
+      };
+    </script>
+  </head>
+<body>
+    <div id="wrap">
+      <div id="header"><h1>Do GDP and HDI tell the same story ?</h1></div>
+      <div id="nav"></div>
+      <div id="main">
+        <h2 id="chart_title">
+        </h2>
+        <div>
+          <span><strong>GDP Rank</strong></span>
+          &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+          &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+          &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+          <span><strong>HDI Rank</strong></span>
+        </div>
+        <script type="text/javascript">
+          /* Load CSV file and pass the contents of it to the draw function */
+          var left_indicator = 'GDP'
+          var right_indicator = 'HDI'
+          d3.csv("rdata.csv", function(d) {
+          d['Year'] = +d['Year'];
+          d[right_indicator] = +d[right_indicator];
+          d[left_indicator] = +d[left_indicator];
+          return d;
+          }, draw);
+        </script>
+      </div>
+      <div id="sidebar">
+        <fieldset>
+          <legend>Relation:</legend> 
+          <span style="color:#0068af;font-size:1.5em">
+            <b>&#8599</b>
+          </span> Countries with low GDP rank have higher HDI rank <br><br>
+          <span style="color:#dc3835;font-size:1.5em">
+            <b>&#8600</b>
+          </span> Countries with high GDP rank have lower HDI rank
+        </fieldset>
+        <br>
+        <br>
+        <div>
+          <div> <strong> Click a country to highlight </strong> </div>
+          <select class="country_select">
+          </select>
+        </div>
+        <br>
+        <div>
+          <div> <strong> Click a year to select </strong> </div>
+          <select class="year_select">
+          </select>
+        </div>
+      </div>
+      <div id="footer">
+      </div>
+    </div>
+</body>
+</html>
