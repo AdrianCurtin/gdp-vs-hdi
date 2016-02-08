@@ -483,7 +483,7 @@ function draw(gdp_data) {
 	}
 
     // Draw world map
-    d3.json("data/world_countries.json", draw_country_map);
+    d3.json("world_countries.json", draw_country_map);
     
     var years = [];
     years_set.forEach(function(d) {
