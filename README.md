@@ -32,6 +32,10 @@ Feedback 1
 Would be nice see which countries are connected to the blue lines. I am not sure if tooltips when mouse over the lines would be appropriate here, but it is an option
  * Maybe the "Click a country to highlight" filter isn't working properly. I attempted to select "Australia" in 2011, and it didn't highlight any line. If you don't have data for a particular year/country, would be better indicate it somewhere
 
+Feedback 2
+
+Feedback 3
+
 
 ## Resources ##
 [[1] Gross Domestic Product - GDP](http://www.investopedia.com/terms/g/gdp.asp)

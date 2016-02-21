@@ -34,21 +34,41 @@
       </script>
     </div>
     <div id="sidebar">
-      <fieldset class="country_legend">
-        <legend><strong>Lines Show Countries where</strong></legend> 
+	  <!---
         <span style="color:#ffcc99;font-size:1.5em"><b>&#9644</b> </span>
-        GDP rank is similar to HDI rank <br><br>
         <span style="color:#872187;font-size:1.5em"><b>&#9644</b> </span>
-        GDP rank exceeds HDI rank by >30<br><br>
         <span style="color:#2966b8;font-size:1.5em"><b>&#9644</b> </span>
-        HDI rank exceeds GDP rank by >30
-      </fieldset>
-      <br>
-      <br>
+		--->
       <fieldset class="region_legend">
         <legend><strong>Regions with Uneven Development</strong></legend> 
         <div class="region_map">
         </div>
+      </fieldset>
+      <br>
+      <br>
+      <fieldset class="country_legend">
+        <legend><strong>Lines Represent Countries Colored by
+        Region. Circle Colors Indicate </strong></legend> 
+		<svg id="hi_gdp" height="24px" width="35px">
+		  <line x1="6px" y1="6px" x2="24px" y2="20px" stroke="#5539f7"
+				stroke-width="2"/>
+		  <circle cx="6px" cy="6px" r="4px" fill="#5539f7"/>
+		  <circle cx="24px" cy="20px" r="4px" fill="#5539f7"/>
+		</svg>
+        GDP rank exceeds HDI rank <br><br> 
+		<svg "lo_gdp" height="24px" width="35px">
+		  <line x1="6px" y1="20px" x2="24px" y2="6px" stroke="#5539f7"
+				stroke-width="2"/>
+		  <circle cx="6px" cy="20px" r="4px" fill="#aa015c"/>
+		  <circle cx="24px" cy="6px" r="4px" fill="#aa015c"/>
+		</svg>
+        HDI rank exceeds GDP rank <br><br> 
+		<svg "eq_gdp" height="12px" width="32px">
+		  <line x1="6px" y1="6px" x2="24px" y2="6px" stroke="#5539f7"/>
+		  <circle cx="6px" cy="6px" r="3px" fill="#a4a7ab"/>
+		  <circle cx="24px" cy="6px" r="3px" fill="#a4a7ab"/>
+		</svg>
+        GDP rank is similar to HDI rank <br><br>
       </fieldset>
       <br>
       <br>

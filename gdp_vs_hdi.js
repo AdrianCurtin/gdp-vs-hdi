@@ -27,13 +27,14 @@ function draw(gdp_data) {
         .attr("height", map_height + map_margin.top + map_margin.bottom)
         .append('g')
         .attr('class', 'map');
+    var hi_gdp_svg = d3.select("body #wrap #sidebar .country_legend #hi_gdp")
+    var lo_gdp_svg = d3.select("body #wrap #sidebar .country_legend #lo_gdp")
+    var eq_gdp_svg = d3.select("body #wrap #sidebar .country_legend #eq_gdp")
     var left_indicator = 'GDP';
     var right_indicator = 'HDI';
-    //var hdi_color = '#2966b8';
-    //var gdp_color = '#872187';
-    var gdp_color = '#779999';
-    var hdi_color = '#886666';
-    var neutral_color = '#ffcc99';
+    var hdi_color = '#aa015c';
+    var gdp_color = '#5539f7';
+    var neutral_color = '#a4a7ab';
     var left_extent = d3.extent(gdp_data, function(d) {
         return d[left_indicator];
     });
