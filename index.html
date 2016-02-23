@@ -10,16 +10,32 @@
 <body>
   <div id="wrap">
     <div id="nav"></div>
-    <h2 id="chart_title"></h2>
+    <h2 id="chart_title">
+	  Ranking Countries by Economic and Human-Development Conditions 
+	</h2>
+	<p>
+	Economic condition of a country is measured by its adjusted per-capita
+	Gross Domestic Product (GDP), and human-development condition of a
+	country is measured by its Human Development Index (HDI).
+	</p>
+	<p>
+
+	</p>	  
     <div id="main">
-      <h3 id="chart_caption"></h3>
+      <fieldset class="country_legend">
+        <legend></legend> 
+      </fieldset>
+      <br>
+      <br>
       <div>
         &nbsp &nbsp 
-        <span><strong>Economic (GDP) Rank</strong></span>
+        <span><strong>GDP Rank </strong></span>
         &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
         &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-        &nbsp 
-        <span><strong>Human Development (HDI) Rank</strong></span>
+        &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+		&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+		&nbsp &nbsp &nbsp &nbsp
+        <span><strong>HDI Rank</strong></span>
       </div>
       <script type="text/javascript">
         /* Load CSV file and pass the contents of it to the draw function */
@@ -34,41 +50,10 @@
       </script>
     </div>
     <div id="sidebar">
-	  <!---
-        <span style="color:#ffcc99;font-size:1.5em"><b>&#9644</b> </span>
-        <span style="color:#872187;font-size:1.5em"><b>&#9644</b> </span>
-        <span style="color:#2966b8;font-size:1.5em"><b>&#9644</b> </span>
-		--->
       <fieldset class="region_legend">
-        <legend><strong>Regions with Uneven Development</strong></legend> 
+        <legend>Regions with Uneven GDP & HDI</legend> 
         <div class="region_map">
         </div>
-      </fieldset>
-      <br>
-      <br>
-      <fieldset class="country_legend">
-        <legend><strong>Lines Represent Countries Colored by
-        Region. Circle Colors Indicate </strong></legend> 
-		<svg id="hi_gdp" height="24px" width="35px">
-		  <line x1="6px" y1="6px" x2="24px" y2="20px" stroke="#5539f7"
-				stroke-width="2"/>
-		  <circle cx="6px" cy="6px" r="4px" fill="#5539f7"/>
-		  <circle cx="24px" cy="20px" r="4px" fill="#5539f7"/>
-		</svg>
-        GDP rank exceeds HDI rank <br><br> 
-		<svg "lo_gdp" height="24px" width="35px">
-		  <line x1="6px" y1="20px" x2="24px" y2="6px" stroke="#5539f7"
-				stroke-width="2"/>
-		  <circle cx="6px" cy="20px" r="4px" fill="#aa015c"/>
-		  <circle cx="24px" cy="6px" r="4px" fill="#aa015c"/>
-		</svg>
-        HDI rank exceeds GDP rank <br><br> 
-		<svg "eq_gdp" height="12px" width="32px">
-		  <line x1="6px" y1="6px" x2="24px" y2="6px" stroke="#5539f7"/>
-		  <circle cx="6px" cy="6px" r="3px" fill="#a4a7ab"/>
-		  <circle cx="24px" cy="6px" r="3px" fill="#a4a7ab"/>
-		</svg>
-        GDP rank is similar to HDI rank <br><br>
       </fieldset>
       <br>
       <br>

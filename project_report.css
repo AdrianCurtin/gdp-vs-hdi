@@ -17,7 +17,7 @@ html {
 }
 #main {
     float:left;
-    width:600px;
+    width:500px;
     padding:10px;
     background:#F0F0F0;
 }
@@ -28,7 +28,7 @@ html {
 }
 #sidebar {
     float:right;
-    width:250px;
+    width:350px;
     padding:10px;
 }
 #nav {
@@ -104,8 +104,9 @@ line {
 }
 fieldset {
 	border: 2px solid black;
-    width: 300px;
 }
 legend {
 	border: 2px solid black;
+    font-size: 1.125em; /* 1em=16px */
+    font-weight: bold; /* 1em=16px */		
 }
