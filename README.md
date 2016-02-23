@@ -42,7 +42,7 @@ Feedback 3
 
 [[2] Gross Domestic Product](https://en.wikipedia.org/wiki/Gross_domestic_product)
 
-[[3] Per capita Gross Domestic Product (GDP) data from Gapminder](http://spreadsheets.google.com/pub?key=0AkBd6lyS3EmpdHo5S0J6ekhVOF9QaVhod05QSGV4T3c&output=xls "try")
+[[3] Per capita Gross Domestic Product (GDP) data from Gapminder](http://spreadsheets.google.com/pub?key=0AkBd6lyS3EmpdHo5S0J6ekhVOF9QaVhod05QSGV4T3c&output=xls)
 
 [[4] United Nations Development Programme, Human Development Report](http://hdr.undp.org/en/content/human-development-index-hdi)
 

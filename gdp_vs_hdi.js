@@ -9,7 +9,7 @@ function draw(gdp_data) {
     "use strict";
     // D3.js setup code 
     var rank_diff_threshold = 30;
-    var chart_margin = {top: 40, bottom: 10, left: 50, right: 50},
+    var chart_margin = {top: 0, bottom: 20, left: 50, right: 50},
         chart_width = 500 - chart_margin.left - chart_margin.right,
         chart_height = 400 - chart_margin.top - chart_margin.bottom;
     var chart_svg = d3.select("body #wrap #main")
@@ -37,14 +37,14 @@ function draw(gdp_data) {
     });
     var left_scale = d3.scale.linear()
         .domain(left_extent)
-        .range([chart_height-chart_margin.top, chart_margin.bottom]);
+		.range([chart_height-chart_margin.top, chart_margin.bottom]);
 
     var right_extent = d3.extent(gdp_data, function(d) {
         return d[right_indicator];
     });
     var right_scale = d3.scale.linear()
         .domain(right_extent)
-        .range([chart_height-chart_margin.top, chart_margin.bottom]);
+		.range([chart_height-chart_margin.top, chart_margin.bottom]);
     var years_set = d3.set();
     var regions_set = d3.set();
     var ccode_to_region = new Map();
@@ -89,21 +89,22 @@ function draw(gdp_data) {
     }
     var left_x = chart_margin.left;
     function left_y(d) {
-        return left_scale(d[left_indicator])
+        return left_scale(d[left_indicator]);
     }
     var right_x = chart_margin.left+chart_width;
     function right_y(d) {
-        return right_scale(d[right_indicator])
+        return right_scale(d[right_indicator]);
     }
-    function different_rank(d, diff_threshold) {
+    function different_rank(d) {
+		var diff_threshold = rank_diff_threshold;
         var rank_diff = d['HDI']-d['GDP'];
-        var is_similar = (rank_diff < -1 * diff_threshold) ||
+        var is_different = (rank_diff < -1 * diff_threshold) ||
             (rank_diff > diff_threshold);
-        return is_similar;
+        return is_different;
     }
     function circle_color(d) {
         var color = neutral_color;
-        if(different_rank(d, rank_diff_threshold)) {
+        if(different_rank(d)) {
             if (d['GDP'] > d['HDI']) {
                 color = gdp_color;
             } else if (d['GDP'] < d['HDI']) {
@@ -113,52 +114,22 @@ function draw(gdp_data) {
         return color;              
     }
     function circle_zindex(d) {
-        var idx = 2;
-        if(different_rank(d, rank_diff_threshold)) {
-			idx = -1;
-        } 
-        return idx;              
+        return different_rank(d) ? -1 : 2;
     }
     function slope_zindex(d) {
-        var idx = 1;
-        if(different_rank(d, rank_diff_threshold)) {
-			idx = -1;
-        } 
-        return idx;              
+        return different_rank(d) ? -1 : 1;              
     }
     function slope_width(d) {
-        var width = 1;
-        if(different_rank(d, rank_diff_threshold)) {
-            width = 2;
-        } 
-        return width;              
+		return different_rank(d) ? 2 : 1;
     }
     function slope_color(d) {
-        //var color = neutral_color;
-        var color = region_color_scale(d['Region']);
-        if(different_rank(d, rank_diff_threshold)) {
-            color = region_color_scale(d['Region']);
-        }
-        return color;
+        return region_color_scale(d['Region']);
     }
     function slope_opacity(d) {
-        var opacity = 0.2;
-        if(different_rank(d, rank_diff_threshold)) {
-            opacity = 1;
-        }
-        return opacity;
+        return different_rank(d) ? 1.0 : 0.2;
     }
     function circle_radius(d) {
-        var radius = '3px';
-        if(different_rank(d, rank_diff_threshold)) {
-            radius = '6px';
-        }
-        return radius;
-    }
-    function display_style(d) {
-        var ds = is_missing(d[left_indicator])||is_missing(d[right_indicator]) ?
-            "none" : null;
-        return ds;
+        return different_rank(d) ? '6px' : '3px';
     }
     function region_color(d) {
         var color = "lightBlue";
@@ -190,7 +161,7 @@ function draw(gdp_data) {
     function highlightMap(map_svg, gdp_data) {
         var ccodes = [];
         gdp_data.forEach(function(d) {
-            if(different_rank(d, rank_diff_threshold)) {
+            if(different_rank(d)) {
                 ccodes.push(d['Country_Code']);
             } 
         }); 
@@ -217,7 +188,7 @@ function draw(gdp_data) {
             var ccode = d['Country_Code'];			
 			if(is_missing(region)) {
 				;
-			} else if(different_rank(d, rank_diff_threshold)) {
+			} else if(different_rank(d)) {
                 if (d['GDP'] > d['HDI']) {
 					if(hi_countries.indexOf(ccode) < 0) {
                         hi_countries.push(ccode);
@@ -245,7 +216,7 @@ function draw(gdp_data) {
 		if(eq_gdp > 0) {
 			var eq_svg = fieldSet.append('svg')
 				.attr("height", 12)
-				.attr("width", 35);
+				.attr("width", 40);
 			eq_svg.append('line')
 			    .attr("x1", 6)
 				.attr("y1", 6)
@@ -265,14 +236,14 @@ function draw(gdp_data) {
 				.attr("r", 3)
 				.attr("fill", neutral_color);
 			fieldSet.append("span")
-				.html(countryText(eq_gdp) + " have simular GDP and HDI ranks")
+				.html(countryText(eq_gdp) + " have similar GDP and HDI ranks")
 				.append('br')
 				.append('br');			
 		}
 		if(hi_gdp > 0) {
 			var eq_svg = fieldSet.append('svg')
 				.attr("height", 24)
-				.attr("width", 35);
+				.attr("width", 40);
 			eq_svg.append('line')
 			    .attr("x1", 6)
 				.attr("y1", 6)
@@ -300,7 +271,7 @@ function draw(gdp_data) {
 		if(lo_gdp > 0) {
 			var eq_svg = fieldSet.append('svg')
 				.attr("height", 24)
-				.attr("width", 35);
+				.attr("width", 40);
 			eq_svg.append('line')
 			    .attr("x1", 6)
 				.attr("y1", 20)
@@ -329,7 +300,7 @@ function draw(gdp_data) {
     }
     
     // Function to blink the slopes and maps for a country. 
-    function blink_country(country_data) {
+    function blinkCountry(country_data) {
         var cline = chart_svg.selectAll("line")
             .data([country_data], key_country_year);
         var lcir = chart_svg.selectAll("circle.left_circle")
@@ -365,11 +336,11 @@ function draw(gdp_data) {
     }
 
     // Function to stop blinking
-    function unblink_country(country_data) {
+    function unblinkCountry(country_data) {
         chart_svg.selectAll("line")
             .data([country_data], key_country_year)
             .transition().duration(100)
-            .attr('opacity', 1);
+            .attr('opacity', slope_opacity);
         chart_svg.selectAll("circle.left_circle")
             .data([country_data], key_country_year)
             .transition().duration(100)
@@ -397,40 +368,40 @@ function draw(gdp_data) {
 
 
     // Functions to display, track, and hide country tip on hover
-    function show_tip(country_data) {
-        if(different_rank(country_data, rank_diff_threshold)) {
+    function showTip(country_data) {
+        //if(different_rank(country_data)) {
             country_tip.select('.region')
-                .attr('color', circle_color(country_data))
+                .style('color', circle_color(country_data))
                 .html("<p class=\"alignleft\"><strong>Region:</strong><\p> <p class=\"alignright\">"+country_data.Region+"</p>");
             country_tip.select('.country')
-                .attr('color', slope_color(country_data))
+                .style('color', slope_color(country_data))
                 .html("<p class=\"alignleft\"><strong>Country:</strong><\p> <p class=\"alignright\">"+country_data.Country_Name+"</p>");
             country_tip.select('.gdp_indicator').html(
                 "<p class=\"alignleft\"><strong>GDP Rank:</strong><\p> <p class=\"alignright\">"+country_data.GDP+"</p>");
             country_tip.select('.hdi_indicator').html(
                 "<p class=\"alignleft\"><strong>HDI Rank:</strong><\p> <p class=\"alignright\">"+country_data.HDI+"</p>");
-            country_tip.attr('display', 'block');
-            blink_country(country_data);
-        }
+            country_tip.style('display', 'block');
+            blinkCountry(country_data);
+        //}
     }
-    function track_tip(country_data) {
-        if(different_rank(country_data, rank_diff_threshold)) {
+    function trackTip(country_data) {
+        //if(different_rank(country_data)) {
             var py = d3.event.pageY;
             var px = d3.event.pageX;
             country_tip.style('top', (py+1) + 'px');
             country_tip.style('left', (px+7) + 'px');
-        }
+        //}
     }
-    function hide_tip(country_data) {
-        if(different_rank(country_data, rank_diff_threshold)) {
+    function hideTip(country_data) {
+        //if(different_rank(country_data)) {
             country_tip.style('display', 'none');
-            unblink_country(country_data);
-        }
+            unblinkCountry(country_data);
+        //}
     }
 
     // Function to hightlight a portion of a slope plot (an svg object)
     // Function to draw a slope plot of all countries in a year
-    function drawSlopPlot(chart_svg, gdp_data) {
+    function prepareSlopPlot(chart_svg, gdp_data) {
         // Remove circles and lines of previous year's slope plot 
         chart_svg.selectAll("line").remove();
         chart_svg.selectAll("circle.left_circle").remove();
@@ -446,15 +417,14 @@ function draw(gdp_data) {
             .attr("x2", right_x)
             .attr("y2", right_y) 
             .attr("stroke", slope_color)
-//            .attr("opacity", slope_opacity)
             .attr("opacity", 0)
             .attr("stroke-width", slope_width)
 		    .attr("z-index", slope_zindex)
-            .on('mouseover', show_tip)
-            .on('mouseout', hide_tip)
-            .on('mousemove', track_tip);
+            .on('mouseover', showTip)
+            .on('mouseout', hideTip)
+            .on('mousemove', trackTip);
         
-        // Draw circles on the left; the represent GDP rankings
+        // Draw circles on the left to represent GDP rankings
         var left_circles = chart_svg.selectAll("circle.left_circle")
             .data(gdp_data, key_country_year);
         left_circles.enter()
@@ -466,11 +436,11 @@ function draw(gdp_data) {
             .attr("opacity", 0)
             .attr("r", circle_radius)
 		    .attr("z-index", circle_zindex)
-            .on('mouseover', show_tip)
-            .on('mouseout', hide_tip)
-            .on('mousemove', track_tip);
+            .on('mouseover', showTip)
+            .on('mouseout', hideTip)
+            .on('mousemove', trackTip);
         
-        // Draw circles on the right; they representing HDI rankings
+        // Draw circles on the right to represent HDI rankings
         var right_circles = chart_svg.selectAll("circle.right_circle")
             .data(gdp_data, key_country_year);
         right_circles.enter()
@@ -482,9 +452,9 @@ function draw(gdp_data) {
             .attr("opacity", 0)
             .attr("r", circle_radius)
 		    .attr("z-index", circle_zindex)
-            .on('mouseover', show_tip)
-            .on('mouseout', hide_tip)
-            .on('mousemove', track_tip);
+            .on('mouseover', showTip)
+            .on('mouseout', hideTip)
+            .on('mousemove', trackTip);
     }
 
     function highlightSlopes(chart_svg, sdata) {
@@ -518,7 +488,7 @@ function draw(gdp_data) {
 
     // Function to highlight slope lines of all countries in a region
     function highlightYearRegion(year, region, gdp_data) {
-		var filtered_data = filterAndSort(year, region, gdp_data);		
+		var filtered_data = filterAndSort(year, region, gdp_data);
         writeCaption(year, region);
         highlightSlopes(chart_svg, filtered_data);
         highlightMap(map_svg, filtered_data);
@@ -583,7 +553,7 @@ function draw(gdp_data) {
         writeCaption(year, current_region);
 
         // Draw slope plot for the current year
-        drawSlopPlot(chart_svg, gdp_data);
+        prepareSlopPlot(chart_svg, gdp_data);
 
         // Highlight the countries on the map
         highlightMap(map_svg, gdp_data);
@@ -635,7 +605,7 @@ function draw(gdp_data) {
                  (d['Region'] === region));
         });
         filtered_data.sort(function(a, b) {
-            if(different_rank(a, rank_diff_threshold)) {
+            if(different_rank(a)) {
                 return 1;
             } else {
                 return 0;
@@ -644,8 +614,9 @@ function draw(gdp_data) {
         return filtered_data;
     }
 
-    // Draw slope plots of the entire data but keep them invisible
-    drawSlopPlot(chart_svg, gdp_data);
+    // Preprare slope plots of the entire data but keep them invisible
+	gdp_data = filterAndSort('', '', gdp_data);		
+    prepareSlopPlot(chart_svg, gdp_data);
 	
     // Take care of the right side bar
     d3.json("world_countries.json", drawMap); // World map
