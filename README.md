@@ -59,5 +59,3 @@ Feedback 3
 [[10] Enter, Update, Exit: An Introduction to D3.js](https://medium.com/@c_behrens/enter-update-exit-6cafc6014c36)
 
 [[11] D3 How to change dataset based on drop down box selection](http://stackoverflow.com/questions/24193593/d3-how-to-change-dataset-based-on-drop-down-box-selection)
-
-

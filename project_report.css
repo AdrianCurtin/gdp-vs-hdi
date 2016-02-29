@@ -90,23 +90,67 @@ line {
 .alignright {
     float: right;
 }
+/*
 .tooltip {
+    display: inline;
+    position: relative;
+}
+
+.tooltip:hover {
+    color: #c00;
+    text-decoration: none;
+}
+*/
+.tooltip {
+	line-height: 0.25em;
+    margin: 0px;
+	padding: 5px;
+    width: 200px;
+	border-radius: 2px;
+    box-shadow: 0 0 5px #999999;
     color: #333;
     background: #eee;
-    box-shadow: 0 0 5px #999999;
-    margin: 0px;
-    padding: 5px;
-    width: 200px;
     font-size: 0.75em;
-    line-height: 0.25em;
+	font-weight: bold;
     position: absolute;
     display: none;
 }
+
+.tooltip:before {
+    border: solid;
+    border-color: #111 transparent;
+    border-color: rgba(0,0,0,.8) transparent;
+    border-width: .4em .4em .0 .4em;
+    bottom: 1em;
+    content: attr(info-tip);
+    display: block;
+    left: 2em;
+    position: absolute;
+    z-index: 99;
+}
+/*
+.tooltip:after {
+    background: #111;
+    background: rgba(0,0,0,.8);
+    border-radius: .5em;
+    bottom: 1.35em;
+    color: #fff;
+    content: attr(title);
+    display: block;
+    left: 1em;
+    padding: .3em 1em;
+    position: absolute;
+    text-shadow: 0 1px 0 #000;
+    white-space: nowrap;
+    z-index: 98;
+}
+*/
 fieldset {
-	border: 2px solid black;
+    border: 2px solid black;
+    font-size: 0.85em; /* 1em=16px */    
 }
 legend {
-	border: 2px solid black;
+    border: 2px solid black;
     font-size: 1.125em; /* 1em=16px */
-    font-weight: bold; /* 1em=16px */		
+    font-weight: bold; /* 1em=16px */
 }
