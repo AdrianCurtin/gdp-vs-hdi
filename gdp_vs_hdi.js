@@ -9,7 +9,7 @@ function draw(gdp_data) {
     "use strict";
     // D3.js setup code 
     var rank_diff_threshold = 30;
-	// Explanations
+    // Explanations
     var chart_margin = {top: 0, bottom: 20, left: 50, right: 50},
         chart_width = 500 - chart_margin.left - chart_margin.right,
         chart_height = 400 - chart_margin.top - chart_margin.bottom;
@@ -38,14 +38,14 @@ function draw(gdp_data) {
     });
     var left_scale = d3.scale.linear()
         .domain(left_extent)
-		.range([chart_height-chart_margin.top, chart_margin.bottom]);
+        .range([chart_height-chart_margin.top, chart_margin.bottom]);
 
     var right_extent = d3.extent(gdp_data, function(d) {
         return d[right_indicator];
     });
     var right_scale = d3.scale.linear()
         .domain(right_extent)
-		.range([chart_height-chart_margin.top, chart_margin.bottom]);
+        .range([chart_height-chart_margin.top, chart_margin.bottom]);
     var years_set = d3.set();
     var regions_set = d3.set();
     var ccode_to_region = new Map();
@@ -67,7 +67,7 @@ function draw(gdp_data) {
         regions.push(d);
     });
 
-	
+    
     // State variables shared across functions
     var current_year = NaN;
     var current_region = '';
@@ -99,7 +99,7 @@ function draw(gdp_data) {
         return right_scale(d[right_indicator]);
     }
     function different_rank(d) {
-		var diff_threshold = rank_diff_threshold;
+        var diff_threshold = rank_diff_threshold;
         var rank_diff = d['HDI']-d['GDP'];
         var is_different = (rank_diff < -1 * diff_threshold) ||
             (rank_diff > diff_threshold);
@@ -123,7 +123,7 @@ function draw(gdp_data) {
         return different_rank(d) ? -1 : 1;              
     }
     function slope_width(d) {
-		return different_rank(d) ? 2 : 1;
+        return different_rank(d) ? 2 : 1;
     }
     function slope_color(d) {
         return region_color_scale(d['Region']);
@@ -142,76 +142,84 @@ function draw(gdp_data) {
         return color;
     }
 
-	// Function to explain high or low GDP in a region
-	function explainRegion(hi_gdp, region) {
-		var explanation = "They are ?";
-		if(region=='') {
-			if(hi_gdp) {
-				explanation = "They are rich in diamond or oil and can achieve high GDP without human productivity.";
-			} else {
-				explanation = "They were formerly part of larger republics and inherited good literacy rates.";
-			}
-		} else if(region.match("Sub-Saharan Africa")) {
-			if(hi_gdp) {
-				explanation = "They are rich in diamond and can achieve high GDP without human productivity.";
-			}
-		} else if(region.match("Middle East")) {
-			if(hi_gdp) {			
-				explanation = "They are rich in oil and can achieve high GDP without human productivity.";
-			}
-		} else if(region.match("Europe")) {
-			if(!hi_gdp) {
-				explanation = "They were formerly part of larger republics and inherited good literacy rates.";
-			} 
-		} else if(region.match("East Asia")) {
-			;
-		} else if(region.match("South Asia")) {
-			if(hi_gdp) {
-				explanation = "The economy of this island country, Maldives, is dominated by tourism and fishing, and is less dependent on human productivity."
-			}
-		} else if(region.match("Latin America")) {
-			;
-		} else if(region.match("North America")) {
-			;
-		}
-		return explanation;
-	}
-	function explainCountry(hi_gdp, ccode) {
-		var region = ccode_to_region.has(ccode) ? ccode_to_region.get(ccode) :
-			'';
-		var explanation = "They are ?";
-		if(region=='') {
-			if(hi_gdp) {
-				explanation = "They are rich in diamond or oil and can achieve high GDP without human productivity.";
-			} else {
-				explanation = "They were formerly part of larger republics and inherited good literacy rates.";
-			}
-		} else if(region.match("Sub-Saharan Africa")) {
-			if(hi_gdp) {
-				explanation = "Rich in diamond";
-			}
-		} else if(region.match("Middle East")) {
-			if(hi_gdp) {			
-				explanation = "Rich in oil";
-			}
-		} else if(region.match("Europe")) {
-			if(!hi_gdp) {
-				explanation = "Former republic";
-			} 
-		} else if(region.match("East Asia")) {
-			;
-		} else if(region.match("South Asia")) {
-			if(hi_gdp) {
-				explanation = "Tourism"
-			}
-		} else if(region.match("Latin America")) {
-			;
-		} else if(region.match("North America")) {
-			;
-		}
-		return explanation;
-	}
-	
+    // Function to explain high or low GDP in a region
+    function explainRegion(hi_gdp, region) {
+        var explanation = "They are ?";
+        if(region=='') {
+            if(hi_gdp) {
+                explanation = "They are rich in diamond or oil and can achieve high GDP without human productivity.";
+            } else {
+                explanation = "They were formerly part of larger republics and inherited good literacy rates.";
+            }
+        } else if(region.match("Sub-Saharan Africa")) {
+            if(hi_gdp) {
+                explanation = "They are rich in diamond and can achieve high GDP without human productivity.";
+            }
+        } else if(region.match("Middle East")) {
+            if(hi_gdp) {            
+                explanation = "They are rich in oil and can achieve high GDP without human productivity.";
+            }
+        } else if(region.match("Europe")) {
+            if(!hi_gdp) {
+                explanation = "They were formerly part of larger republics and inherited good literacy rates.";
+            } 
+        } else if(region.match("East Asia")) {
+            ;
+        } else if(region.match("South Asia")) {
+            if(hi_gdp) {
+                explanation = "The economy of this island country, Maldives, is dominated by tourism and fishing, and is less dependent on human productivity."
+            }
+        } else if(region.match("Latin America")) {
+            ;
+        } else if(region.match("North America")) {
+            ;
+        }
+        return explanation;
+    }
+    function explainCountry(hi_gdp, ccode) {
+        var region = ccode_to_region.has(ccode) ? ccode_to_region.get(ccode) :
+            '';
+        var explanation = "They are ?";
+        if(region=='') {
+            if(hi_gdp) {
+                explanation = "They are rich in diamond or oil and can achieve high GDP without human productivity.";
+            } else {
+                explanation = "They were formerly part of larger republics and inherited good literacy rates.";
+            }
+        } else if(region.match("Sub-Saharan Africa")) {
+            if(hi_gdp) {
+                if(ccode=='GAB') {
+                    explanation = "Rich in oil";
+                } else {
+                    explanation = "Rich in diamond";
+                }
+            }
+        } else if(region.match("Middle East")) {
+            if(hi_gdp) {            
+                if(ccode=='DJI') {
+                    explanation = "Strategic port on Red Sea";
+                } else {
+                    explanation = "Rich in oil";
+                }
+            }
+        } else if(region.match("Europe")) {
+            if(!hi_gdp) {
+                explanation = "Former republic";
+            } 
+        } else if(region.match("East Asia")) {
+            ;
+        } else if(region.match("South Asia")) {
+            if(hi_gdp) {
+                explanation = "Tourism"
+            }
+        } else if(region.match("Latin America")) {
+            ;
+        } else if(region.match("North America")) {
+            ;
+        }
+        return explanation;
+    }
+    
     // Function Draw a world map with country boundaries
     function drawMap(geo_data) {
         var projection = d3.geo.mercator()
@@ -225,7 +233,7 @@ function draw(gdp_data) {
             .attr('id', function(d) {return d.id;})
             .attr('d', path)
             .attr('opacity', 0.2)
-		    .style('stroke', 'black')
+            .style('stroke', 'black')
             .style('stroke-width', 0.5)
             .style('fill', region_color);
     }
@@ -234,140 +242,140 @@ function draw(gdp_data) {
     function highlightMap(map_svg, gdp_data) {
         var ccodesBright = [], ccodesFade = [];
         gdp_data.forEach(function(d) {
-			var ccode = d['Country_Code'];
+            var ccode = d['Country_Code'];
             if(different_rank(d)) {
                 ccodesBright.push(ccode);
             } else {
-				ccodesFade.push(ccode);
-			} 
+                ccodesFade.push(ccode);
+            } 
         }); 
         map_svg.selectAll('path')
             .attr('opacity', function(d) {
-				return (ccodesBright.indexOf(d.id) !== -1) ? 1
-					: (ccodesFade.indexOf(d.id) !== -1) ? 0.2 : 0;
+                return (ccodesBright.indexOf(d.id) !== -1) ? 1
+                    : (ccodesFade.indexOf(d.id) !== -1) ? 0.2 : 0;
             });
     }
-	
-	function countryText(count) {
-		if(count==0) {
-			return "No countries have";
-		} else if (count==1) {
-			return "Only 1 country has";
-		} else {
-			return count+" countries have";			
-		}
-	}
-	
-	// Function to highlight the countries in gdp_data on the map
+    
+    function countryText(count) {
+        if(count==0) {
+            return "No countries have";
+        } else if (count==1) {
+            return "Only 1 country has";
+        } else {
+            return count+" countries have";            
+        }
+    }
+    
+    // Function to highlight the countries in gdp_data on the map
     function highlightLegend(year, region, filtered_data) {
         var gcountries = groupCountries(filtered_data);
         var hi_gdp = gcountries.hi_gdp.length;
-		var lo_gdp = gcountries.lo_gdp.length;
-		var eq_gdp = gcountries.eq_gdp.length;
+        var lo_gdp = gcountries.lo_gdp.length;
+        var eq_gdp = gcountries.eq_gdp.length;
 
-		var line_color = is_missing(region) ? 'black' :
-			region_color_scale(region);
-		
-		var fieldSet = d3.select("body #wrap #main .country_legend");
-		fieldSet.selectAll("svg").remove();
-		fieldSet.selectAll("span").remove();		
+        var line_color = is_missing(region) ? 'black' :
+            region_color_scale(region);
+        
+        var fieldSet = d3.select("body #wrap #main .country_legend");
+        fieldSet.selectAll("svg").remove();
+        fieldSet.selectAll("span").remove();        
 
-		fieldSet.select("legend")
-			.html(writeCaption(year, region));
-		if(eq_gdp > 0) {
-			var eq_svg = fieldSet.append('svg')
-				.attr("height", 12)
-				.attr("width", 40);
-			var legend_txt = "";
-			if((hi_gdp==0) && (lo_gdp==0)) {
-				legend_txt += "All ";
-			}
-			legend_txt += countryText(eq_gdp);
-			legend_txt += " similar GDP and HDI ranks.";
-			legend_txt += "They are able to use national income to nurture their people, and engage their people to improve their economy.";
-			eq_svg.append('line')
-			    .attr("x1", 6)
-				.attr("y1", 6)
-				.attr("x2", 30)
-				.attr("y2", 6)
-			    .attr("opacity", 0.2)
-			    .attr("stroke-width", 1)
-				.attr("stroke", line_color);
-			eq_svg.append('circle')
-			    .attr("cx", 6)
-				.attr("cy", 6)
-				.attr("r", 3)
-				.attr("fill", neutral_color);
-			eq_svg.append('circle')
-			    .attr("cx", 30)
-				.attr("cy", 6)
-				.attr("r", 3)
-				.attr("fill", neutral_color);
-			fieldSet.append("span")
-				.html(legend_txt)
-				.append('br')
-				.append('br');			
-		}
-		if(hi_gdp > 0) {
-			var hi_svg = fieldSet.append('svg')
-				.attr("height", 24)
-				.attr("width", 40);
-			var legend_txt = countryText(hi_gdp);
-			legend_txt += " much higher GDP than HDI ranks. ";
-			legend_txt += explainRegion(true, region);
-			hi_svg.append('line')
-			    .attr("x1", 6)
-				.attr("y1", 6)
-				.attr("x2", 30)
-				.attr("y2", 20)
-			    .attr("opacity", 0.2)
-			    .attr("stroke-width", 1)
-				.attr("stroke", line_color);
-			hi_svg.append('circle')
-			    .attr("cx", 6)
-				.attr("cy", 6)
-				.attr("r", 4)
-				.attr("fill", gdp_color);
-			hi_svg.append('circle')
-			    .attr("cx", 30)
-				.attr("cy", 20)
-				.attr("r", 4)
-				.attr("fill", gdp_color);
-			fieldSet.append("span")
-				.html(legend_txt)
-				.append('br')
-				.append('br');			
-		}
-		if(lo_gdp > 0) {
-			var lo_svg = fieldSet.append('svg')
-				.attr("height", 24)
-				.attr("width", 40);
-			var legend_txt = countryText(lo_gdp);
-			legend_txt += " much lower HDI than GDP ranks. ";
-			legend_txt += explainRegion(false, region);
-			lo_svg.append('line')
-			    .attr("x1", 6)
-				.attr("y1", 20)
-				.attr("x2", 30)
-				.attr("y2", 6)
-			    .attr("opacity", 0.2)
-			    .attr("stroke-width", 1)
-				.attr("stroke", line_color);
-			lo_svg.append('circle')
-			    .attr("cx", 6)
-				.attr("cy", 20)
-				.attr("r", 4)
-				.attr("fill", hdi_color);
-			lo_svg.append('circle')
-			    .attr("cx", 30)
-				.attr("cy", 6)
-				.attr("r", 4)
-				.attr("fill", hdi_color);
-			fieldSet.append("span")
-				.html(legend_txt)
-				.append('br')
-				.append('br');			
-		}
+        fieldSet.select("legend")
+            .html(writeCaption(year, region));
+        if(eq_gdp > 0) {
+            var eq_svg = fieldSet.append('svg')
+                .attr("height", 12)
+                .attr("width", 40);
+            var legend_txt = "";
+            if((hi_gdp==0) && (lo_gdp==0)) {
+                legend_txt += "All ";
+            }
+            legend_txt += countryText(eq_gdp);
+            legend_txt += " similar GDP and HDI ranks.";
+            legend_txt += "They are able to use national income to nurture their people, and engage their people to improve their economy.";
+            eq_svg.append('line')
+                .attr("x1", 6)
+                .attr("y1", 6)
+                .attr("x2", 30)
+                .attr("y2", 6)
+                .attr("opacity", 0.2)
+                .attr("stroke-width", 1)
+                .attr("stroke", line_color);
+            eq_svg.append('circle')
+                .attr("cx", 6)
+                .attr("cy", 6)
+                .attr("r", 3)
+                .attr("fill", neutral_color);
+            eq_svg.append('circle')
+                .attr("cx", 30)
+                .attr("cy", 6)
+                .attr("r", 3)
+                .attr("fill", neutral_color);
+            fieldSet.append("span")
+                .html(legend_txt)
+                .append('br')
+                .append('br');            
+        }
+        if(hi_gdp > 0) {
+            var hi_svg = fieldSet.append('svg')
+                .attr("height", 24)
+                .attr("width", 40);
+            var legend_txt = countryText(hi_gdp);
+            legend_txt += " much higher GDP than HDI ranks. ";
+            legend_txt += explainRegion(true, region);
+            hi_svg.append('line')
+                .attr("x1", 6)
+                .attr("y1", 6)
+                .attr("x2", 30)
+                .attr("y2", 20)
+                .attr("opacity", 0.2)
+                .attr("stroke-width", 1)
+                .attr("stroke", line_color);
+            hi_svg.append('circle')
+                .attr("cx", 6)
+                .attr("cy", 6)
+                .attr("r", 4)
+                .attr("fill", gdp_color);
+            hi_svg.append('circle')
+                .attr("cx", 30)
+                .attr("cy", 20)
+                .attr("r", 4)
+                .attr("fill", gdp_color);
+            fieldSet.append("span")
+                .html(legend_txt)
+                .append('br')
+                .append('br');            
+        }
+        if(lo_gdp > 0) {
+            var lo_svg = fieldSet.append('svg')
+                .attr("height", 24)
+                .attr("width", 40);
+            var legend_txt = countryText(lo_gdp);
+            legend_txt += " much lower HDI than GDP ranks. ";
+            legend_txt += explainRegion(false, region);
+            lo_svg.append('line')
+                .attr("x1", 6)
+                .attr("y1", 20)
+                .attr("x2", 30)
+                .attr("y2", 6)
+                .attr("opacity", 0.2)
+                .attr("stroke-width", 1)
+                .attr("stroke", line_color);
+            lo_svg.append('circle')
+                .attr("cx", 6)
+                .attr("cy", 20)
+                .attr("r", 4)
+                .attr("fill", hdi_color);
+            lo_svg.append('circle')
+                .attr("cx", 30)
+                .attr("cy", 6)
+                .attr("r", 4)
+                .attr("fill", hdi_color);
+            fieldSet.append("span")
+                .html(legend_txt)
+                .append('br')
+                .append('br');            
+        }
     }
     
     // Function to blink the slopes and maps for a country. 
@@ -408,7 +416,7 @@ function draw(gdp_data) {
 
     // Function to stop blinking
     function unblinkCountry(country_data) {
-		var ccode = country_data["Country_Code"];
+        var ccode = country_data["Country_Code"];
         chart_svg.selectAll("line")
             .data([country_data], key_country_year)
             .transition().duration(100)
@@ -424,8 +432,8 @@ function draw(gdp_data) {
         map_svg.select('path#'+ccode)
             .transition().duration(100)
             .attr('opacity', function(d) {
-				var opac = different_rank(country_data) ? 1 : 0.2;
-				return opac;
+                var opac = different_rank(country_data) ? 1 : 0.2;
+                return opac;
             });
     }
     
@@ -433,34 +441,34 @@ function draw(gdp_data) {
     // and functions for showing, tracking, and hiding the tips
     var country_tip = d3.select("body #wrap #main .tooltip");
     var tip_table = country_tip.select("table");
-	var country_field = tip_table.select("#country_field");
-	var region_field = tip_table.select("#region_field");
-	var gdp_field = tip_table.select("#gdp_field");
-	var hdi_field = tip_table.select("#hdi_field");
-	debugger;
-	
+    var country_field = tip_table.select("#country_field");
+    var region_field = tip_table.select("#region_field");
+    var gdp_field = tip_table.select("#gdp_field");
+    var hdi_field = tip_table.select("#hdi_field");
+    debugger;
+    
     // Functions to display, track, and hide country tip on hover
     function showTip(country_data) {
-		country_field.html(country_data.Country_Name);
-		region_field.html(country_data.Region)
-			.style('color', slope_color(country_data));;
-		gdp_field.html("GDP: "+country_data.GDP);		
-		hdi_field.html("HDI: "+country_data.HDI);
-		debugger;
-		if(different_rank(country_data)) {
-			var ctext = explainCountry(
-				country_data['GDP']>country_data['HDI'],
-				country_data.Country_Code);
-			country_tip.attr('info-tip', ctext)
-				.style('border-bottom',
-					   '30px solid'+circle_color(country_data));
-		} else {
-			country_tip.attr('info-tip',null)
-				.style('border-bottom', 'none');						
-		}		
+        country_field.html(country_data.Country_Name);
+        region_field.html(country_data.Region)
+            .style('color', slope_color(country_data));;
+        gdp_field.html("GDP: "+country_data.GDP);        
+        hdi_field.html("HDI: "+country_data.HDI);
+        debugger;
+        if(different_rank(country_data)) {
+            var ctext = explainCountry(
+                country_data['GDP']>country_data['HDI'],
+                country_data.Country_Code);
+            country_tip.attr('info-tip', ctext)
+                .style('border-bottom',
+                       '30px solid'+circle_color(country_data));
+        } else {
+            country_tip.attr('info-tip',null)
+                .style('border-bottom', 'none');                        
+        }        
         country_tip
-		    .style('box-shadow', '0 0 10px'+slope_color(country_data))
-			.style('display', 'block');
+            .style('box-shadow', '0 0 10px'+slope_color(country_data))
+            .style('display', 'block');
         blinkCountry(country_data);
     }
     function trackTip(country_data) {
@@ -494,7 +502,7 @@ function draw(gdp_data) {
             .attr("stroke", slope_color)
             .attr("opacity", 0)
             .attr("stroke-width", slope_width)
-		    .attr("z-index", slope_zindex)
+            .attr("z-index", slope_zindex)
             .on('mouseover', showTip)
             .on('mouseout', hideTip)
             .on('mousemove', trackTip);
@@ -510,7 +518,7 @@ function draw(gdp_data) {
             .attr("fill", circle_color)
             .attr("opacity", 0)
             .attr("r", circle_radius)
-		    .attr("z-index", circle_zindex)
+            .attr("z-index", circle_zindex)
             .on('mouseover', showTip)
             .on('mouseout', hideTip)
             .on('mousemove', trackTip);
@@ -526,7 +534,7 @@ function draw(gdp_data) {
             .attr("fill", circle_color)
             .attr("opacity", 0)
             .attr("r", circle_radius)
-		    .attr("z-index", circle_zindex)
+            .attr("z-index", circle_zindex)
             .on('mouseover', showTip)
             .on('mouseout', hideTip)
             .on('mousemove', trackTip);
@@ -562,11 +570,11 @@ function draw(gdp_data) {
 
     // Function to highlight slope lines of all countries in a region
     function highlightYearRegion(year, region, gdp_data) {
-		var filtered_data = filterBy(year, region, gdp_data);
+        var filtered_data = filterBy(year, region, gdp_data);
         writeCaption(year, region);
         highlightSlopes(chart_svg, filtered_data);
         highlightMap(map_svg, filtered_data);
-		highlightLegend(year, region, filtered_data);
+        highlightLegend(year, region, filtered_data);
     }
 
     // Function to display select options to pick a region to highlight
@@ -596,7 +604,7 @@ function draw(gdp_data) {
         });
     }
 
-	// Function to write the caption for the slope chart
+    // Function to write the caption for the slope chart
     function writeCaption(year, region) {
         // Display titile and caption
         //var caption_elem = d3.select("#chart_caption")
@@ -605,7 +613,7 @@ function draw(gdp_data) {
             region_caption = "all World Regions";
         } else {
             region_caption = "<span style=\"color:"+region_color_scale(region)+
-				"\">"+region+"</span>";
+                "\">"+region+"</span>";
         }
         var year_caption;
         if(is_missing(year)) {
@@ -613,7 +621,7 @@ function draw(gdp_data) {
         } else {
             year_caption = " in "+year;
         }
-		return "Countries in "+region_caption+" "+year_caption;
+        return "Countries in "+region_caption+" "+year_caption;
         //caption_elem.html();
     }
 
@@ -712,8 +720,6 @@ function draw(gdp_data) {
         var region = '';
         var year = 2005;    
         selectYear(year);
-        highlightYearRegion(year, region, gdp_data);
-/*        
         var year_interval = setInterval(function() {
             var year = years[year_idx];
             selectYear(year);
@@ -731,6 +737,5 @@ function draw(gdp_data) {
                 highlightYearRegion(year, region, gdp_data);            
             }
         }, 1000);
-*/
     });
 }
