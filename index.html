@@ -11,16 +11,16 @@
   <div id="wrap">
     <div id="nav"></div>
     <h2 id="chart_title">
-	  Relation between Economic and Human-Development Conditions
-	</h2>
-	<ul>
-	<li>Economic condition of a country is measured by its PPP adjusted per-capita
-	  <a href="http://spreadsheets.google.com/pub?key=0AkBd6lyS3EmpdHo5S0J6ekhVOF9QaVhod05QSGV4T3c&output=xls">Gross Domestic Product (GDP)</a></li>
-	<li>Human-development condition of a country is measured by its
-	  <a href="http://spreadsheets.google.com/pub?key=tyadrylIpQ1K_iHP407374Q&output=xls">Human Development Index (HDI)</a></li>
-	</ul>
-	<p>
-	</p>	  
+      Relation between Economic and Human-Development Conditions
+    </h2>
+    <ul>
+    <li>Economic condition of a country is measured by its PPP adjusted per-capita
+      <a href="http://spreadsheets.google.com/pub?key=0AkBd6lyS3EmpdHo5S0J6ekhVOF9QaVhod05QSGV4T3c&output=xls">Gross Domestic Product (GDP)</a></li>
+    <li>Human-development condition of a country is measured by its
+      <a href="http://spreadsheets.google.com/pub?key=tyadrylIpQ1K_iHP407374Q&output=xls">Human Development Index (HDI)</a></li>
+    </ul>
+    <p>
+    </p>      
     <div id="main">
       <fieldset class="country_legend">
         <legend></legend> 
@@ -32,8 +32,8 @@
         &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
         &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
         &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-		&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-		&nbsp &nbsp &nbsp &nbsp
+        &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+        &nbsp &nbsp &nbsp &nbsp
         <span><strong>HDI Rank</strong></span>
       </div>
       <script type="text/javascript">
@@ -47,10 +47,26 @@
             return d;
         }, draw);
       </script>
+      <div class="tooltip" align="center">
+        <table>
+          <tr>
+            <td>Country</td>
+            <td id="country_field"></td>            
+          </tr>
+          <tr>
+            <td>Region</td>            
+            <td id="region_field"></td>
+          </tr>
+          <tr>
+            <td id="gdp_field"></td>
+            <td id="hdi_field"></td>            
+          </tr>
+        </table>
+      </div>
     </div>
     <div id="sidebar">
       <fieldset class="region_legend">
-        <legend>Regions with Uneven GDP & HDI</legend> 
+        <legend>Countries with Uneven GDP & HDI</legend> 
         <div class="region_map">
         </div>
       </fieldset>
@@ -62,7 +78,7 @@
         </select>
       </div>
       <div>
-        <p><strong>Highlight Region</strong></p> 
+        <p><strong>Select Region</strong></p> 
         <select class="region_select">
         </select>
       </div>

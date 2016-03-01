@@ -214,7 +214,6 @@ function draw(gdp_data) {
 	
     // Function Draw a world map with country boundaries
     function drawMap(geo_data) {
-		debugger;
         var projection = d3.geo.mercator()
             .scale(45)
             .translate([map_width, map_height]);
@@ -229,7 +228,6 @@ function draw(gdp_data) {
 		    .style('stroke', 'black')
             .style('stroke-width', 0.5)
             .style('fill', region_color);
-		debugger;
     }
 
     // Function to highlight the countries in gdp_data on the map
@@ -433,32 +431,36 @@ function draw(gdp_data) {
     
     // Create a DOM element for displaying tool tips for a country on hover, and
     // and functions for showing, tracking, and hiding the tips
-    var country_tip = d3.select("body #wrap #main")
-        .append("div")
-		.attr("class", "tooltip");
-    country_tip.append('div').attr('class', 'country');
-	country_tip.append('p').style('clear', 'both');
-    country_tip.append('div').attr('class', 'region');
-    country_tip.append('p').style('clear', 'both');
-    country_tip.append('div').attr('class', 'rank_indicator');
-
+    var country_tip = d3.select("body #wrap #main .tooltip");
+    var tip_table = country_tip.select("table");
+	var country_field = tip_table.select("#country_field");
+	var region_field = tip_table.select("#region_field");
+	var gdp_field = tip_table.select("#gdp_field");
+	var hdi_field = tip_table.select("#hdi_field");
+	debugger;
+	
     // Functions to display, track, and hide country tip on hover
     function showTip(country_data) {
-        country_tip.select('.region')
-            .style('color', circle_color(country_data))
-            .html("<p class=\"alignleft\"><strong>Region:</strong><\p> <p class=\"alignright\">"+country_data.Region+"</p>");
-        country_tip.select('.country')
-            .style('color', slope_color(country_data))
-            .html("<p class=\"alignleft\"><strong>Country:</strong><\p> <p class=\"alignright\">"+country_data.Country_Name+"</p>");
-        country_tip.select('.rank_indicator').html(
-            "<p class=\"alignleft\"><strong>GDP Rank: </strong>"+country_data.GDP+"<\p> <p class=\"alignright\"><strong>HDI Rank: </strong>"+country_data.GDP+"<\p>");
+		country_field.html(country_data.Country_Name);
+		region_field.html(country_data.Region)
+			.style('color', slope_color(country_data));;
+		gdp_field.html("GDP: "+country_data.GDP);		
+		hdi_field.html("HDI: "+country_data.HDI);
+		debugger;
 		if(different_rank(country_data)) {
 			var ctext = explainCountry(
 				country_data['GDP']>country_data['HDI'],
 				country_data.Country_Code);
-			country_tip.attr('info-tip', "<strong>Economy: </strong>"+ctext);
-		}
-        country_tip.style('display', 'block');
+			country_tip.attr('info-tip', ctext)
+				.style('border-bottom',
+					   '30px solid'+circle_color(country_data));
+		} else {
+			country_tip.attr('info-tip',null)
+				.style('border-bottom', 'none');						
+		}		
+        country_tip
+		    .style('box-shadow', '0 0 10px'+slope_color(country_data))
+			.style('display', 'block');
         blinkCountry(country_data);
     }
     function trackTip(country_data) {
@@ -560,7 +562,6 @@ function draw(gdp_data) {
 
     // Function to highlight slope lines of all countries in a region
     function highlightYearRegion(year, region, gdp_data) {
-		debugger;
 		var filtered_data = filterBy(year, region, gdp_data);
         writeCaption(year, region);
         highlightSlopes(chart_svg, filtered_data);
@@ -664,12 +665,12 @@ function draw(gdp_data) {
         var hi_countries = [], lo_countries=[], eq_countries = [];
         gdp_data.forEach(function(d) {
             var region = d['Region'];
-            var ccode = d['Country_Code'];			
-			if(is_missing(region)) {
-				;
-			} else if(different_rank(d)) {
+            var ccode = d['Country_Code'];            
+            if(is_missing(region)) {
+                ;
+            } else if(different_rank(d)) {
                 if (d['GDP'] > d['HDI']) {
-					if(hi_countries.indexOf(ccode) < 0) {
+                    if(hi_countries.indexOf(ccode) < 0) {
                         hi_countries.push(ccode);
                     }
                 } else if(lo_countries.indexOf(ccode) < 0) {
@@ -679,10 +680,10 @@ function draw(gdp_data) {
                 eq_countries.push(ccode);
             }
         });
-		return {hi_gdp: hi_countries,
-				lo_gdp: lo_countries,
-				eq_gdp: eq_countries};
-	}
+        return {hi_gdp: hi_countries,
+                lo_gdp: lo_countries,
+                eq_gdp: eq_countries};
+    }
 
     // Function to filter and sort gdp data based on year and rank
     function filterBy(year, region, gdp_data) {
@@ -696,40 +697,40 @@ function draw(gdp_data) {
     }
 
     // Preprare slope plots of the entire data but keep them invisible
-	sortByRankDifference(gdp_data);
+    sortByRankDifference(gdp_data);
     var gcountries = groupCountries(gdp_data);
     prepareSlopPlot(chart_svg, gdp_data);
-	
+    
     // Take care of the right side bar
     d3.json("world_countries.json", function(d) {
-		drawMap(d); // World map
-		showYearOptions(years);					  // Year options
-		showRegionOptions(regions);				  // Region options
+        drawMap(d); // World map
+        showYearOptions(years);                      // Year options
+        showRegionOptions(regions);                  // Region options
 
-		// Animate slope plots over the years, ending with all years
-		var year_idx = 0;
-		var region = '';
-		var year = 2005;	
-		selectYear(year);
-		highlightYearRegion(year, region, gdp_data);			
-/*
-		var year_interval = setInterval(function() {
-			var year = years[year_idx];
-			selectYear(year);
-			
-			//draw_yearly_data(year, yearly_data);
-			highlightYearRegion(year, region, gdp_data);
-			year_idx++;
-			if(year_idx >= years.length) {
-				// At the end of animation, plot all years at once, and
-				// provide options to highligt any year and drill down
-				clearInterval(year_interval);
-				year = NaN;
-				selectYear(year);
-				//draw_yearly_data(year, yearly_data);
-				highlightYearRegion(year, region, gdp_data);			
-			}
-		}, 1000);
+        // Animate slope plots over the years, ending with all years
+        var year_idx = 0;
+        var region = '';
+        var year = 2005;    
+        selectYear(year);
+        highlightYearRegion(year, region, gdp_data);
+/*        
+        var year_interval = setInterval(function() {
+            var year = years[year_idx];
+            selectYear(year);
+            
+            //draw_yearly_data(year, yearly_data);
+            highlightYearRegion(year, region, gdp_data);
+            year_idx++;
+            if(year_idx >= years.length) {
+                // At the end of animation, plot all years at once, and
+                // provide options to highligt any year and drill down
+                clearInterval(year_interval);
+                year = NaN;
+                selectYear(year);
+                //draw_yearly_data(year, yearly_data);
+                highlightYearRegion(year, region, gdp_data);            
+            }
+        }, 1000);
 */
-	});
+    });
 }
