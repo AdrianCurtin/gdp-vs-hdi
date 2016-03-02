@@ -1,6 +1,6 @@
 Since economically developed countries generally offer better living standards, modern societies have come to accept that human development is implied by economic progress. However, is this true in all parts of the world ? This is an important question for policymaking international organizations such as United Nations or World Bank. This inforgraphic visually explains the evidence in this regard gathered from publicly available data over the years. 
 
-The interactive visualization can be viewed on [bl.ocks.org](http://bl.ocks.org/hominid101/raw/e0b4b770a9d21d121293/).
+The interactive visualization can be viewed at [this link][ITER_LATEST] on bl.ocks.org.
 
 ## Summary ##
 Economic progress is measured using Gross Domestic Product (GDP) [1], which is the total monetary value of all finished goods and services produced within a country's borders. For reliable comparison among countries over time, we use Purchasing Power Parity (PPP) adjusted per-capita GDP [2] data available from Gapminder [3]. However, can it be called progress if the GDP of a country grows at the expense of depleting natural resources, or at the expense of the overall well-being of its citizens ?
@@ -18,7 +18,7 @@ The charts show the relationship beteen time-series data of two sets of ordered 
 
 ## Feedback ##
 
-#### First Iteration
+#### [First Iteration][ITER1]
 
 Some excerpts from the feedback on the first iteration are listed below  
 
@@ -30,7 +30,7 @@ Would be nice see which countries are connected to the blue lines. I am not sure
 
 Based on the above feedback, countries were grouped into regions and were highlighted on a mercator projection. These new display elements and visual encodings clarify the findings in the data. More explanatory findings are added to the graphic that now highlight that only a few contries show significant discrepancy in GDP and HDI rankings, and these countries share some common scenarios. This new graphic can be viewed in the second iteration below.
 
-#### Second Iteration
+#### [Second Iteration][ITER2]
 
 Excerpts from the feedback on the second iteration are listed below
 
@@ -48,8 +48,13 @@ Excerpts from the feedback on the second iteration are listed below
 
 * When I choose the region and then choose other year, my region is reset to "all". I recommend you to add the possibility to track different years for the particular region.
 
-The explanatory message was brough to a sharper focus in the third iteration with an improved legend that explains the yearly observations per region. Additional explanations have been added to individual country tooltips to show a more detailed per-country explanation in the tool tip. The Javascript code was enhanced with the ability to explore different years for a particular region.
+The explanatory message was brought to sharper focus in the third iteration with an improved legend that explains the yearly observations per region. Individual country tool tips have been enhanced to show additional  per-country explanation. The Javascript code was enhanced to explore different years for a particular region. This latest iteration can be seen at
 
+### [Latest Iteration][ITER_LATEST]
+
+[ITER1]:http://bl.ocks.org/hominid101/raw/ca86c5df0608309c44b9/
+[ITER2]:http://bl.ocks.org/hominid101/raw/22ff8b1d7410000417a6/
+[ITER_LATEST]: http://bl.ocks.org/hominid101/raw/e0b4b770a9d21d121293/
 
 ## Resources ##
 [[1] Gross Domestic Product - GDP](http://www.investopedia.com/terms/g/gdp.asp)
