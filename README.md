@@ -1,6 +1,8 @@
 Since economically developed countries generally offer better living standards, modern societies have come to accept that human development is implied by economic progress. However, is this true in all parts of the world ? This is an important question for policymaking international organizations such as United Nations or World Bank. This inforgraphic visually explains the evidence in this regard gathered from publicly available data over the years. 
 
-The interactive visualization can be viewed at [this link][ITER_LATEST] on bl.ocks.org.
+All data and code is available for download from the git repository
+[\[gitRepo\]][&gitRepo]. The interactive visualization can be viewed
+at [this link][ITER_LATEST] on bl.ocks.org.
 
 ## Summary ##
 Economic progress is measured using Gross Domestic Product (GDP) [1], which is the total monetary value of all finished goods and services produced within a country's borders. For reliable comparison among countries over time, we use Purchasing Power Parity (PPP) adjusted per-capita GDP [2] data available from Gapminder [3]. However, can it be called progress if the GDP of a country grows at the expense of depleting natural resources, or at the expense of the overall well-being of its citizens ?
@@ -57,6 +59,9 @@ The explanatory message was brought to sharper focus in the third iteration with
 [ITER_LATEST]: http://bl.ocks.org/samitchaudhuri/raw/e0b4b770a9d21d121293/
 
 ## Resources ##
+
+[\[gitRepo\] GDP vs HDI: Code Repository][&gitRepo]
+
 [[1] Gross Domestic Product - GDP](http://www.investopedia.com/terms/g/gdp.asp)
 
 [[2] Gross Domestic Product](https://en.wikipedia.org/wiki/Gross_domestic_product)
@@ -78,3 +83,5 @@ The explanatory message was brought to sharper focus in the third iteration with
 [[10] Enter, Update, Exit: An Introduction to D3.js](https://medium.com/@c_behrens/enter-update-exit-6cafc6014c36)
 
 [[11] D3 How to change dataset based on drop down box selection](http://stackoverflow.com/questions/24193593/d3-how-to-change-dataset-based-on-drop-down-box-selection)
+
+[&gitRepo]: https://github.com/samitchaudhuri/gdp-vs-hdi "GDP vs HDI: Code Repository"
