@@ -52,9 +52,9 @@ The explanatory message was brought to sharper focus in the third iteration with
 
 ### [Latest Iteration][ITER_LATEST]
 
-[ITER1]:http://bl.ocks.org/hominid101/raw/ca86c5df0608309c44b9/
-[ITER2]:http://bl.ocks.org/hominid101/raw/22ff8b1d7410000417a6/
-[ITER_LATEST]: http://bl.ocks.org/hominid101/raw/e0b4b770a9d21d121293/
+[ITER1]:http://bl.ocks.org/samitchaudhuri/raw/ca86c5df0608309c44b9/
+[ITER2]:http://bl.ocks.org/samitchaudhuri/raw/22ff8b1d7410000417a6/
+[ITER_LATEST]: http://bl.ocks.org/samitchaudhuri/raw/e0b4b770a9d21d121293/
 
 ## Resources ##
 [[1] Gross Domestic Product - GDP](http://www.investopedia.com/terms/g/gdp.asp)
